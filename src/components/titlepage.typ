@@ -3,7 +3,9 @@
 
 #let thesis-titlepage(
   title: none,
+  subtitle: none,
   title-translation: none,
+  subtitle-translation: none,
   date: none,
   author: none,
   id: none,
@@ -13,30 +15,76 @@
   examiner-gender: none,
   draft: true,
   date-today: none,
+  additional-logo: none,
+  additional-text: none,
   t: none,
 ) = {
   align(center, [
     #v(1cm)
 
-    #image("../media/HM_logo.png", width: 45%)
+    #if additional-logo == none and additional-text == none {
+      // Standard Layout
+      image("../media/HM_logo.png", width: 45%)
 
-    #t.hm \
-    #study-info.fk
+      [#t.hm \ ]
+      study-info.fk
+    } else {
+      // Layout with additional logo
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 1cm,
+
+        // Hochschule München
+        align(center, stack(
+          dir: ttb,
+          spacing: 0.2cm,
+          image("../media/HM_logo.png", width: 75%),
+          t.hm,
+          study-info.fk,
+        )),
+
+        // Additional Logo
+        align(center, stack(
+          dir: ttb,
+          spacing: 0.2cm,
+          if additional-logo != none {
+            additional-logo
+          },
+          if additional-text != none {
+            additional-text
+          },
+        )),
+      )
+    }
 
     #v(2cm)
 
     #text(size: 14pt)[#study-info.thesis-type \ #t.for-the-degree-of \ #study-info.degree]
 
-    #text(size: 16pt, weight: "bold", if (title != none) {
-      title
-    } else {
-      todo[#t.title]
-    })
+    // Title
+    #text(size: 16pt, weight: "bold", [
+      #if title != none {
+        title
+      } else {
+        todo[#t.title]
+      }
+    ])
+    // Subtitle
+    #if subtitle != none {
+      v(0.15cm)
+      text(size: 13pt, subtitle)
+    }
 
-    #context {
-      text(size: 14pt, if (title-translation != none) {
-        title-translation
-      } else { if (text.lang == "de") { todo[Title] } })
+    // Title translation
+    #if title-translation != none or subtitle-translation != none {
+      v(0.6cm)
+      if title-translation != none {
+        text(size: 14pt, weight: "medium", title-translation)
+      }
+      if subtitle-translation != none {
+        v(0.15cm)
+        text(size: 12pt, subtitle-translation)
+      }
     }
 
     #v(0.5cm)
@@ -97,20 +145,53 @@
 
 #let modularbeit-titlepage(
   subject: none,
+  project-subtitle : none,
   project-description: none,
   authors: (),
   draft: true,
   date-today: none,
   study-info: none,
+  additional-logo: none,
+  additional-text: none,
   t: none,
 ) = {
   align(center, [
     #v(1cm)
 
-    #image("../media/HM_logo.png", width: 45%)
+    #if additional-logo == none and additional-text == none {
+      // Standard Layout
+      image("../media/HM_logo.png", width: 45%)
 
-    #t.hm \
-    #study-info.fk
+      [#t.hm \ ]
+      study-info.fk
+    } else {
+      // Layout with additional logo
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 1cm,
+
+        // Hochschule München
+        align(center, stack(
+          dir: ttb,
+          spacing: 0.2cm,
+          image("../media/HM_logo.png", width: 75%),
+          t.hm,
+          study-info.fk,
+        )),
+
+        // Additional Logo
+        align(center, stack(
+          dir: ttb,
+          spacing: 0.2cm,
+          if additional-logo != none {
+            additional-logo
+          },
+          if additional-text != none {
+            additional-text
+          },
+        )),
+      )
+    }
 
     #v(2cm)
 
@@ -120,7 +201,11 @@
       todo[#t.subject]
     })
 
-    #text(size: 14pt)[#t.project-documentation]
+    #text(size: 14pt, if (project-subtitle != none) {
+      project-subtitle
+    } else {
+      todo[#t.project-subtitle]
+    })
 
     #project-description
 

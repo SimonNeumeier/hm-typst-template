@@ -3,7 +3,9 @@
 
 #let _document(
   title: none,
-  title-translation: none,
+  subtitle: none,
+  title-translation: none, 
+  subtitle-translation: none,
   document-type: "thesis",
   author: none,
   gender: none,
@@ -29,11 +31,16 @@
   appendix: none,
   layout-mode: "screen",
   subject: none,
+  project-subtitle: none,
   project-description: none,
   print-abbreviations-list: true,
   print-list-of-listings: true,
   print-list-of-tables: true,
   print-list-of-figures: true,
+  automatic-pagebreaks: true,
+  draft-based-cite: "springer-basic-author-date",
+  additional-logo: none,
+  additional-text: none,
   major: none,
   body,
 ) = {
@@ -73,7 +80,7 @@
 
   // draft-based accents
   set cite(
-    style: if draft { "springer-basic-author-date" } else { "ieee" },
+    style: if draft { draft-based-cite } else { "ieee" },
   )
   show cite: set text(fill: if draft { orange } else { black })
   show footnote: set text(fill: if draft { purple } else { black })
@@ -137,10 +144,13 @@
     modularbeit-titlepage(
       subject: subject,
       authors: author,
+      project-subtitle: project-subtitle,
       project-description: project-description,
       draft: draft,
       study-info: info,
       date-today: custom-date-format(datetime.today(), lang: language, pattern: "long"),
+      additional-logo: additional-logo,
+      additional-text: additional-text,
       t: t,
     )
     pagebreak()
@@ -149,7 +159,9 @@
 
     thesis-titlepage(
       title: title,
+      subtitle: subtitle,
       title-translation: title-translation,
+      subtitle-translation: subtitle-translation,
       author: author,
       supervisors: supervisors,
       date: custom-date-format(submission-date, lang: language, pattern: "long"),
@@ -159,6 +171,8 @@
       draft: draft,
       study-info: info,
       date-today: custom-date-format(datetime.today(), lang: language, pattern: "long"),
+      additional-logo: additional-logo,
+      additional-text: additional-text,
       t: t,
     )
     pagebreak()
@@ -241,16 +255,23 @@
   [
     // pagebreak before every level 1 heading
     #show heading.where(level: 1): it => {
-      pagebreak(weak: true)
-      if (force-odd) {
-        set page(footer: none, header: none)
-        pagebreak(to: "odd")
-        let previous = query(selector(heading.where(level: 1, numbering: "1")).before(here()))
+      if automatic-pagebreaks {
+        pagebreak(weak: true)
 
-        if previous.len() == 1 {
-          counter(page).update(1)
+        if force-odd {
+          set page(footer: none, header: none)
+          pagebreak(to: "odd")
+
+          let previous = query(
+            selector(heading.where(level: 1, numbering: "1")).before(here())
+          )
+
+          if previous.len() == 1 {
+            counter(page).update(1)
+          }
         }
       }
+
       it
     }
 
@@ -399,7 +420,9 @@
 
 #let thesis(
   title: none,
+  subtitle: none,
   title-translation: none,
+  subtitle-translation: none,
   author: none,
   gender: none,
   student-id: none,
@@ -411,6 +434,8 @@
   submission-date: none,
   abstract: none,
   abstract-translation: none,
+  declaration-text: none,
+  ai-used: false,
   blocking: false,
   enable-header: true,
   draft: true,
@@ -425,12 +450,18 @@
   print-list-of-listings: true,
   print-list-of-tables: true,
   print-list-of-figures: true,
+  automatic-pagebreaks: false,
+  draft-based-cite: "springer-basic-author-date",
+  additional-logo: none,
+  additional-text: none,
   body,
 ) = {
   _document(
     document-type: "thesis",
     title: title,
+    subtitle: subtitle,
     title-translation: title-translation,
+    subtitle-translation: title-translation,
     author: author,
     gender: gender,
     student-id: student-id,
@@ -442,6 +473,8 @@
     submission-date: submission-date,
     abstract: abstract,
     abstract-translation: abstract-translation,
+    ai-used: ai-used,
+    declaration-text: declaration-text,
     blocking: blocking,
     enable-header: enable-header,
     draft: draft,
@@ -456,6 +489,10 @@
     print-list-of-listings: print-list-of-listings,
     print-list-of-tables: print-list-of-tables,
     print-list-of-figures: print-list-of-figures,
+    automatic-pagebreaks: automatic-pagebreaks,
+    draft-based-cite: draft-based-cite,
+    additional-logo: additional-logo,
+    additional-text: additional-text,
     body,
   )
 }
@@ -473,10 +510,15 @@
   language: "de",
   appendix: none,
   layout-mode: "screen",
+  project-subtitle: none,
   project-description: none,
   print-list-of-listings: false,
   print-list-of-tables: false,
   print-list-of-figures: false,
+  automatic-pagebreaks: false,
+  draft-based-cite: "springer-basic-author-date",
+  additional-logo: none,
+  additional-text: none,
   body,
 ) = {
   _document(
@@ -492,11 +534,16 @@
     appendix: appendix,
     layout-mode: layout-mode,
     subject: subject,
+    project-subtitle: project-subtitle,
     project-description: project-description,
     print-abbreviations-list: if (abbreviations-list != none) { print-abbreviations-list } else { false },
     print-list-of-listings: print-list-of-listings,
     print-list-of-tables: print-list-of-tables,
     print-list-of-figures: print-list-of-figures,
+    automatic-pagebreaks: automatic-pagebreaks,
+    draft-based-cite: draft-based-cite,
+    additional-logo: additional-logo,
+    additional-text: additional-text,
     body,
   )
 }
@@ -521,6 +568,8 @@
   print-list-of-listings: true,
   print-list-of-tables: true,
   print-list-of-figures: true,
+  automatic-pagebreaks: false,
+  draft-based-cite: "springer-basic-author-date",
   body,
 ) = {
   _document(
@@ -544,6 +593,8 @@
     print-list-of-listings: print-list-of-listings,
     print-list-of-tables: print-list-of-tables,
     print-list-of-figures: print-list-of-figures,
+    automatic-pagebreaks: automatic-pagebreaks,
+    draft-based-cite: draft-based-cite,
     body,
   )
 }
