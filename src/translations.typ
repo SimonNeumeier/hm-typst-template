@@ -1,6 +1,6 @@
 #let translations-data = (
   hm: (
-    de: "Hochschule München",
+    de: "Hochschule für angewandte Wissenschaften München",
     en: "Munich University of Applied Sciences",
   ),
   for-the-degree-of: (
