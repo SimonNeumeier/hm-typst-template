@@ -175,8 +175,8 @@
           dir: ttb,
           spacing: 0.2cm,
           image("../media/HM_logo.png", width: 75%),
-          t.hm,
-          study-info.fk,
+          text(size: 9pt, t.hm),
+          text(size: 9pt, study-info.fk),
         )),
 
         // Additional Logo
@@ -187,7 +187,7 @@
             additional-logo
           },
           if additional-text != none {
-            additional-text
+            text(size: 9pt,  additional-text)
           },
         )),
       )
