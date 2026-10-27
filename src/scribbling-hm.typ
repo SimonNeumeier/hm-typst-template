@@ -21,6 +21,7 @@
   ai-used: false,
   declaration-text: none,
   blocking: false,
+  blocking-text: none,
   enable-header: true,
   draft: true,
   bib: none,
@@ -205,6 +206,7 @@
     blocking-notice(
       gender: gender,
       thesis-type: info.thesis-type,
+      blocking-text: blocking-text,
       t: t,
     )
 
@@ -437,6 +439,7 @@
   declaration-text: none,
   ai-used: false,
   blocking: false,
+  blocking-text: none,
   enable-header: true,
   draft: true,
   bib: none,
@@ -476,6 +479,7 @@
     ai-used: ai-used,
     declaration-text: declaration-text,
     blocking: blocking,
+    blocking-text: blocking-text,
     enable-header: enable-header,
     draft: draft,
     bib: bib,
